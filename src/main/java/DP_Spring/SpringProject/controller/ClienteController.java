@@ -10,19 +10,19 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Optional;
 
 @Controller
-public class ClienteController {
+public class ClienteController {//@ResquestMapping("clientes")
 
     @Autowired
     private ClienteRepository repo;
 
     @GetMapping("/")
-    @ResponseBody
+    @ResponseBody //remover ResponseBody e deixar o ResponseEntity
     public ResponseEntity<String>hello(){
         Cliente cli = new Cliente("Erico", "Rua JJ Doutado");
         Cliente cli2 = new Cliente("maria", "Rua 04");
         repo.save(cli);
         repo.save(cli2);
-        return ResponseEntity.ok("Cliente criado e salvo: " + cli.getNome() +" "+cli2.getNome());
+        return ResponseEntity.ok("Cliente criado e salvo: " + repo.findAll());
     }
 
     @PostMapping
