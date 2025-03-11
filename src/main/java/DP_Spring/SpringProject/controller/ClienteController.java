@@ -22,7 +22,7 @@ public class ClienteController {
         Cliente cli2 = new Cliente("maria", "Rua 04");
         repo.save(cli);
         repo.save(cli2);
-        return ResponseEntity.ok("Cliente criado e salvo: " + cli.getNome());
+        return ResponseEntity.ok("Cliente criado e salvo: " + cli.getNome() +" "+cli2.getNome());
     }
 
     @PostMapping
@@ -35,7 +35,10 @@ public class ClienteController {
     @GetMapping("/{id}")
     public ResponseEntity<Cliente> findById(@PathVariable Long id){
         Optional<Cliente> cli = repo.findById(id);
-        return ResponseEntity.ok(cli.get());
+        if(cli.isPresent()){
+            return ResponseEntity.ok(cli.get());
+        }
+        return ResponseEntity.notFound().build();
     }
 
     @PutMapping("/{id}")
@@ -49,5 +52,17 @@ public class ClienteController {
         }else{
             return ResponseEntity.notFound().build();
         }
+    }
+
+    @DeleteMapping("/{id}")
+    @ResponseBody
+    public ResponseEntity<String>deletar(@PathVariable Long id){
+        Optional<Cliente>cli = repo.findById(id);
+        if(cli.isPresent()){
+            repo.delete(cli.get());
+        }else{
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok("\"cliente deletado com sucesso\"");
     }
 }
